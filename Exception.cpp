@@ -15,20 +15,30 @@ public:
     ~A() noexcept(false)
     {
         std::cout << "This is destructor" << std::endl;
-        delete[] i;
-        throw std::exception("Terminated destructor");
+        
+        try
+        {   
+            delete[] i;
+            throw std::exception("Terminated destructor");
+        }
+        catch (std::exception& msg)
+        {
+            std::cerr << msg.what() << " from destructor" << std::endl;
+        }
     }
 };
 
 int main()
-{
+{   
+    A a;
     try
-    {
-        A a;
+    {     
+        a.i[4] = 8;
+        throw std::exception("Terminated destructor");
     }
     catch (const std::exception& msg)
     {
-        std::cout << msg.what();
+        std::cout << msg.what() << " out of destructor" << std::endl;
     }
     
     return 0;
